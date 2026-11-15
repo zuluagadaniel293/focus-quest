@@ -36,7 +36,10 @@ function speakText(text) {
     u.lang = v ? v.lang : 'es-CO';
     u.rate = 0.95;
     // en algunos celulares, hablar justo después de cancelar se pierde, y Chrome a veces queda en pausa
-    const go = () => { try { s.resume(); s.speak(u); } catch (e) { /* nada */ } };
+    const go = () => {
+      try { if (s.resume) s.resume(); } catch (e) { /* nada */ }
+      try { s.speak(u); } catch (e) { /* nada */ }
+    };
     if (busy) setTimeout(go, 80); else go();
   } catch (e) { /* sin voz disponible */ }
 }
