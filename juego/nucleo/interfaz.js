@@ -27,14 +27,17 @@ function speakText(text) {
   try {
     const s = window.speechSynthesis;
     if (!s || !text) return;
-    s.cancel();
+    const busy = s.speaking || s.pending;
+    if (busy) s.cancel();
     const u = new SpeechSynthesisUtterance(String(text).replace(/\s+/g, ' ').replace(/([!?.])\./g, '$1').replace(/[✔✘★👆]/g, ''));
     const vs = s.getVoices();
     const v = vs.find(x => /^es[-_](CO|MX|US|419)/i.test(x.lang)) || vs.find(x => /^es/i.test(x.lang));
     if (v) u.voice = v;
     u.lang = v ? v.lang : 'es-CO';
     u.rate = 0.95;
-    s.speak(u);
+    // en algunos celulares, hablar justo después de cancelar se pierde, y Chrome a veces queda en pausa
+    const go = () => { try { s.resume(); s.speak(u); } catch (e) { /* nada */ } };
+    if (busy) setTimeout(go, 80); else go();
   } catch (e) { /* sin voz disponible */ }
 }
 function stopSpeaking() {
