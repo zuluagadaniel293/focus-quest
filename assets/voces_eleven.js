@@ -4,6 +4,36 @@ window.VOICES_ELEVEN = {
   "comunes": {
     "unlock": [
       "voces/comunes/eleven/unlock.mp3"
+    ],
+    "regla_classic": [
+      "voces/comunes/eleven/regla_classic.mp3"
+    ],
+    "regla_notx": [
+      "voces/comunes/eleven/regla_notx.mp3"
+    ],
+    "regla_ax": [
+      "voces/comunes/eleven/regla_ax.mp3"
+    ],
+    "regla_catch": [
+      "voces/comunes/eleven/regla_catch.mp3"
+    ],
+    "regla_race": [
+      "voces/comunes/eleven/regla_race.mp3"
+    ],
+    "regla_find": [
+      "voces/comunes/eleven/regla_find.mp3"
+    ],
+    "regla_dodge": [
+      "voces/comunes/eleven/regla_dodge.mp3"
+    ],
+    "regla_path": [
+      "voces/comunes/eleven/regla_path.mp3"
+    ],
+    "regla_memory": [
+      "voces/comunes/eleven/regla_memory.mp3"
+    ],
+    "regla_memory_bwd": [
+      "voces/comunes/eleven/regla_memory_bwd.mp3"
     ]
   },
   "heroes": {

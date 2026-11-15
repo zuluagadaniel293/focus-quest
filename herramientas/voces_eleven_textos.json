@@ -1533,5 +1533,55 @@
     "texto": "[scared] ¡Rápido, Gomi, sálvame!",
     "voz": "will",
     "firma": "b50299d7ec"
+  },
+  "voces/comunes/eleven/regla_classic.mp3": {
+    "texto": "Mira bien el centro de la pantalla. Cuando aparezca el que te mostramos en verde, toca la pantalla o presiona espacio. Si sale otro, no toques nada. ¡Espera al correcto!",
+    "voz": "lily",
+    "firma": "a1429ea7be"
+  },
+  "voces/comunes/eleven/regla_notx.mp3": {
+    "texto": "En este juego tocas casi todo. Cada vez que aparezca algo, toca la pantalla o presiona espacio. Pero cuando salga el que te mostramos en rojo, ¡frena y no toques!",
+    "voz": "lily",
+    "firma": "179f607fb0"
+  },
+  "voces/comunes/eleven/regla_ax.mp3": {
+    "texto": "Fíjate en la pista. Toca la pantalla o presiona espacio solo cuando el objetivo salga justo después de la pista. Si sale sin la pista antes, ¡no toques!",
+    "voz": "lily",
+    "firma": "83076455f0"
+  },
+  "voces/comunes/eleven/regla_catch.mp3": {
+    "texto": "Muévete de lado a lado con las flechas o con el dedo. Atrapa solo el que te mostramos en verde y esquiva todo lo demás que cae.",
+    "voz": "lily",
+    "firma": "1efb2ecb3e"
+  },
+  "voces/comunes/eleven/regla_race.mp3": {
+    "texto": "Cambia de carril con las flechas o tocando arriba o abajo de tu personaje. Alcanza solo el que te mostramos en verde y deja pasar lo demás.",
+    "voz": "lily",
+    "firma": "b6a56f12f5"
+  },
+  "voces/comunes/eleven/regla_find.mp3": {
+    "texto": "Van a salir muchas cosas a la vez. Busca el que te mostramos en verde y tócalo. Si no está, no toques nada y espera.",
+    "voz": "lily",
+    "firma": "f1addfd312"
+  },
+  "voces/comunes/eleven/regla_dodge.mp3": {
+    "texto": "Van a llegar tres poderes como sombras. A mitad de camino uno se detiene. ¡Ponte en su carril! No te muevas antes de tiempo.",
+    "voz": "lily",
+    "firma": "f6a7483819"
+  },
+  "voces/comunes/eleven/regla_path.mp3": {
+    "texto": "Mira el camino que hace tu amigo de piedra en piedra. Cuando sus huellas se borren, lleva a tu personaje por el mismo camino.",
+    "voz": "lily",
+    "firma": "ecd05e60b8"
+  },
+  "voces/comunes/eleven/regla_memory.mp3": {
+    "texto": "Mira en qué casillas aparece, una por una. Cuando termine, tócalas en el mismo orden.",
+    "voz": "lily",
+    "firma": "c843877afa"
+  },
+  "voces/comunes/eleven/regla_memory_bwd.mp3": {
+    "texto": "Ahora al revés. Toca las casillas empezando por la última que apareció y terminando en la primera.",
+    "voz": "lily",
+    "firma": "544a0d94a0"
   }
 }
