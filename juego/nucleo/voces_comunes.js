@@ -5,8 +5,8 @@
 const UNLOCK_LINE = '¡Felicidades! ¡Desbloqueaste un nuevo mundo!';
 
 // Reglas de cada juego, en general (sin nombres de personajes, porque sirven para todos los mundos y para el
-// Modo Examen) y para computador y celular a la vez. Las lee el narrador con el botón "🔊 Escuchar" de la pantalla
-// de "Cómo jugar" (y solas a los niños de 7 años o menos). En pantalla siguen saliendo con los nombres de cada mundo.
+// Modo Examen) y para computador y celular a la vez. El narrador las lee solo al abrir la pantalla de "Cómo jugar",
+// a cualquier edad, y el botón "🔁 Repetir" las vuelve a sonar. En pantalla siguen saliendo con los nombres de cada mundo.
 // Cambiar un texto obliga a regrabarlo (gasta créditos de ElevenLabs).
 const RULE_LINES = {
   classic: 'Mira bien el centro de la pantalla. Cuando aparezca el que te mostramos en verde, toca la pantalla o presiona espacio. Si sale otro, no toques nada. ¡Espera al correcto!',

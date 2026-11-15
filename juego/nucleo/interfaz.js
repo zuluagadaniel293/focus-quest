@@ -41,20 +41,21 @@ function stopSpeaking() {
   if (typeof stopVoice === 'function') stopVoice();   // también el narrador grabado
   try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) { /* nada */ }
 }
-// Niños de 7 años o menos: las instrucciones se leen solas al aparecer
+// Niños de 7 años o menos (ya no se usa para la voz: las instrucciones suenan siempre)
 const youngPlayer = () => { const p = currentPlayer(); const a = p ? parseInt(p.age, 10) : NaN; return a > 0 && a <= 7; };
-// Botón "🔊 Escuchar" que lee las instrucciones (getText devuelve el texto); list = objetos a borrar con la pantalla.
+// Botón "🔁 Repetir": las instrucciones suenan solas al aparecer y el botón las repite. Lee las instrucciones (getText devuelve el texto); list = objetos a borrar con la pantalla.
 // clip = id de las reglas grabadas por el narrador (regla_classic...): si existe, suena esa grabación (voz de
 // ElevenLabs); si no, la voz del navegador lee el texto de la pantalla.
 function addSpeakButton(scene, x, y, getText, depth, list, clip) {
   const recorded = clip && ((window.VOICES_ELEVEN || {}).comunes || {})[clip];
   if (!recorded && !window.speechSynthesis) return null;
   const say = () => { if (recorded) playVoice('comunes', clip, getText()); else speakText(getText()); };
-  const b = scene.add.text(x, y, '🔊 Escuchar', { font: 'bold 18px Arial', color: '#0f172a', backgroundColor: '#fde047',
+  const b = scene.add.text(x, y, '🔁 Repetir', { font: 'bold 18px Arial', color: '#0f172a', backgroundColor: '#fde047',
     padding: { x: 10, y: 6 } }).setOrigin(0.5).setDepth(depth || 0).setInteractive({ useHandCursor: true });
   b.on('pointerdown', say);
   if (list) list.push(b);
-  if (youngPlayer()) scene.time.delayedCall(500, () => { if (b.active) say(); });
+  // las instrucciones suenan siempre al aparecer, a cualquier edad (el botón sirve para volver a escucharlas)
+  scene.time.delayedCall(500, () => { if (b.active) say(); });
   scene.events.once('shutdown', stopSpeaking);
   return b;
 }
