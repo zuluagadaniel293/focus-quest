@@ -101,7 +101,12 @@ function axCueRole(theme, i) {
 }
 // Empieza un capítulo o nivel: Memoria tiene su propia escena
 function startMinigame(scene, data) {
-  scene.scene.start(data.minigame === 'memory' ? 'Memory' : 'Game', data);
+  // En el jefe final el juego de cada fase sale del sorteo (bossPhases), no del que venga en data: si la primera
+  // fase es Memoria, tiene que abrir la escena de Memoria (antes abría la del juego y se quedaba en "¡Ya!")
+  let mg = data.minigame;
+  const ch = data.mode === 'historia' && STORY[data.theme] ? STORY[data.theme].chapters[data.chapter] : null;
+  if (ch && ch.boss) mg = bossPhases(data.theme)[data.phase || 0].mg;
+  scene.scene.start(mg === 'memory' ? 'Memory' : 'Game', Object.assign({}, data, { minigame: mg }));
 }
 
 const hexColor = n => '#' + n.toString(16).padStart(6, '0');

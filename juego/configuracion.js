@@ -22,7 +22,7 @@ const CONFIG = {
 // Tamaño del juego: todo se diseña en 960 x 540, pero se dibuja RES veces más grande para que se vea nítido.
 const GAME_W = 960, GAME_H = 540, RES = 2;
 // Versión que se ve abajo a la izquierda de la pantalla inicial (para saber si el celular cargó lo último)
-const GAME_VERSION = '15-nov · 4';
+const GAME_VERSION = '15-nov · 5';
 
 // Minijuegos: cada uno se juega distinto, pero todos miden aciertos, omisiones y comisiones.
 // instr(n, holder): n = qué buscar ("a Sombra"), holder = con qué atrapar ("la canasta" / "la red")
