@@ -61,7 +61,9 @@ function starsFor(s, mg) {
   // Encuentra y Esquiva: los errores se cuentan sobre todos los intentos (en Esquiva frenan pocos poderes por nivel,
   // y un solo error no debe quitar todas las estrellas)
   const base = mg === 'find' || mg === 'dodge' ? s.trials : s.distractors;
-  const commRate = base ? s.commissions / base : 0;
+  // Mínimo 8: cuando hay muy pocas veces en las que no había que tocar (en Menos uno, o en el jefe final, pueden ser
+  // 3 o 4), un solo error sería el 25-33 % y quitaba estrellas aunque acertara todo (pasó con 45 de 45 y 1 error)
+  const commRate = s.commissions ? s.commissions / Math.max(base, 8) : 0;
   if (hitRate >= 0.9 && commRate <= 0.1) return 3;
   if (hitRate >= 0.75 && commRate <= 0.25) return 2;
   if (hitRate >= 0.5 && commRate <= 0.4) return 1;
