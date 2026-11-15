@@ -65,7 +65,8 @@ function starsFor(s, mg) {
   // 3 o 4), un solo error sería el 25-33 % y quitaba estrellas aunque acertara todo (pasó con 45 de 45 y 1 error)
   const commRate = s.commissions ? s.commissions / Math.max(base, 8) : 0;
   if (hitRate >= 0.9 && commRate <= 0.1) return 3;
-  if (hitRate >= 0.75 && commRate <= 0.25) return 2;
+  // con 1 o 2 errores no se pierde: para no pasar el nivel hacen falta al menos 3 errores (o pocos aciertos)
+  if (hitRate >= 0.75 && (commRate <= 0.25 || s.commissions <= 2)) return 2;
   if (hitRate >= 0.5 && commRate <= 0.4) return 1;
   return 0;
 }

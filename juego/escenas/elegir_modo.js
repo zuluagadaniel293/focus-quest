@@ -48,6 +48,8 @@ class ModeScene extends Phaser.Scene {
         .setInteractive({ useHandCursor: true }).on('pointerdown', () => this.scene.start('Players'));
     }
     this.resultsZone();
+    this.add.text(16, H - 8, 'v ' + GAME_VERSION + (this.sys.game.renderer.type === Phaser.CANVAS ? ' · C' : ' · G'),
+      { font: '12px Arial', color: '#475569' }).setOrigin(0, 1);
   }
   // Zona de resultados (Panel del profesional): abajo a la derecha. Se entra manteniendo presionado 2 segundos,
   // para que un niño no entre por error.

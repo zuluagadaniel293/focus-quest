@@ -22,6 +22,31 @@
 </head>
 <body>
 <div id="game"></div>
+<script>
+  // Si algo falla (sobre todo en celulares, donde no hay consola), se muestra un cuadrito rojo con el error para
+  // poder mandarle una captura al equipo. Se cierra tocándolo.
+  (function () {
+    var shown = 0;
+    function report(msg) {
+      if (shown++ > 4) return;
+      var d = document.getElementById('errores');
+      if (!d) {
+        d = document.createElement('div'); d.id = 'errores';
+        d.style.cssText = 'position:fixed;left:8px;bottom:8px;max-width:70%;z-index:70;background:#b91c1c;color:#fff;' +
+          'font:12px/1.35 monospace;padding:8px 10px;border-radius:8px;opacity:.92;white-space:pre-wrap;word-break:break-word';
+        d.onclick = function () { d.remove(); shown = 0; };
+        document.body.appendChild(d);
+      }
+      d.textContent += (d.textContent ? '\n' : '⚠ Error (toca para cerrar) · ' + navigator.userAgent.replace(/.*(iPhone OS [\d_]+|Android [\d.]+|Windows NT [\d.]+|Mac OS X [\d_]+).*/, '$1') + '\n') + msg;
+    }
+    window.addEventListener('error', function (e) {
+      report((e.message || 'error') + (e.filename ? ' @ ' + e.filename.split('/').pop().split('?')[0] + ':' + e.lineno : ''));
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      var r = e.reason; report('promesa: ' + (r && (r.message || r.name) || r));
+    });
+  })();
+</script>
 <div id="girar"><div class="ico">📱</div><div>Gira tu celular para jugar</div><small>Focus Quest se juega con la pantalla horizontal</small></div>
 <script>
   // En celulares y tabletas: al primer toque, pantalla completa y horizontal (funciona en Android; en iPhone el
