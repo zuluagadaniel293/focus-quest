@@ -37,17 +37,24 @@ function speakText(text) {
     s.speak(u);
   } catch (e) { /* sin voz disponible */ }
 }
-function stopSpeaking() { try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) { /* nada */ } }
-// Niños de 5 a 7 años: las instrucciones se leen solas al aparecer
+function stopSpeaking() {
+  if (typeof stopVoice === 'function') stopVoice();   // también el narrador grabado
+  try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) { /* nada */ }
+}
+// Niños de 7 años o menos: las instrucciones se leen solas al aparecer
 const youngPlayer = () => { const p = currentPlayer(); const a = p ? parseInt(p.age, 10) : NaN; return a > 0 && a <= 7; };
-// Botón "🔊 Escuchar" que lee las instrucciones (getText devuelve el texto); list = objetos a borrar con la pantalla
-function addSpeakButton(scene, x, y, getText, depth, list) {
-  if (!window.speechSynthesis) return null;
+// Botón "🔊 Escuchar" que lee las instrucciones (getText devuelve el texto); list = objetos a borrar con la pantalla.
+// clip = id de las reglas grabadas por el narrador (regla_classic...): si existe, suena esa grabación (voz de
+// ElevenLabs); si no, la voz del navegador lee el texto de la pantalla.
+function addSpeakButton(scene, x, y, getText, depth, list, clip) {
+  const recorded = clip && ((window.VOICES_ELEVEN || {}).comunes || {})[clip];
+  if (!recorded && !window.speechSynthesis) return null;
+  const say = () => { if (recorded) playVoice('comunes', clip, getText()); else speakText(getText()); };
   const b = scene.add.text(x, y, '🔊 Escuchar', { font: 'bold 18px Arial', color: '#0f172a', backgroundColor: '#fde047',
     padding: { x: 10, y: 6 } }).setOrigin(0.5).setDepth(depth || 0).setInteractive({ useHandCursor: true });
-  b.on('pointerdown', () => speakText(getText()));
+  b.on('pointerdown', say);
   if (list) list.push(b);
-  if (youngPlayer()) scene.time.delayedCall(500, () => { if (b.active) speakText(getText()); });
+  if (youngPlayer()) scene.time.delayedCall(500, () => { if (b.active) say(); });
   scene.events.once('shutdown', stopSpeaking);
   return b;
 }

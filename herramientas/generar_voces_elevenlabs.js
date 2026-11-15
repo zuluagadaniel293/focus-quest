@@ -58,7 +58,7 @@ for (const f of Object.values(REPARTO)) {
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'juego/modos/historia/mundos', f.carpeta + '.js'), 'utf8'), sandbox);
 }
 vm.runInContext(fs.readFileSync(path.join(ROOT, 'juego/nucleo/voces_comunes.js'), 'utf8') +
-  '\nthis.UNLOCK_LINE = UNLOCK_LINE;', sandbox);
+  '\nthis.UNLOCK_LINE = UNLOCK_LINE; this.RULE_LINES = RULE_LINES;', sandbox);
 
 // [grupo del mapa, carpeta, id, quién (para mostrar), voz, texto a enviar]
 const FRASES = [];
@@ -78,6 +78,8 @@ for (const [key, r] of Object.entries(REPARTO)) {
     (v.text || []).forEach((s, k) => add('dist_' + name + '_' + (k + 1), v.who === 'villain' ? 'villain' : 'friend', s, EMOCION[name])));
 }
 FRASES.push(['comunes', 'comunes', 'unlock', 'desbloqueo', VOZ_UNLOCK, EMOCION.unlock + ' ' + sandbox.UNLOCK_LINE]);
+// Reglas de cada juego: la misma voz del narrador (la del desbloqueo), sin etiqueta de emoción
+Object.entries(sandbox.RULE_LINES).forEach(([mg, s]) => FRASES.push(['comunes', 'comunes', 'regla_' + mg, 'reglas', VOZ_UNLOCK, s]));
 
 // las comunes primero: sirven en todos los mundos
 FRASES.sort((a, b) => (b[0] === 'comunes') - (a[0] === 'comunes'));

@@ -133,7 +133,8 @@ class MemoryScene extends Phaser.Scene {
       : 'Ahora ' + tapWord + ' del último al primero.\nEjemplo: si apareció 1 → 2 → 3, tocas 3 → 2 → 1.';
     add(this.add.text(W / 2, 345, how, { font: '24px Arial', color: '#f1f5f9', align: 'center', lineSpacing: 10 }).setOrigin(0.5));
     // leer en voz alta (solo en los de 5 a 7 años se lee al aparecer)
-    addSpeakButton(this, W - 170, 82, () => title + '. ' + how.replace(/→/g, ',') + (flashes ? '. Recuerda este, e ignora los demás.' : ''), D + 1, it);
+    addSpeakButton(this, W - 170, 82, () => title + '. ' + how.replace(/→/g, ',') + (flashes ? '. Recuerda este, e ignora los demás.' : ''), D + 1, it,
+      dir === 'fwd' ? 'regla_memory' : 'regla_memory_bwd');   // las reglas grabadas por el narrador, si están
     const btn = add(this.add.rectangle(W / 2, 440, 260, 62, th.accent).setInteractive({ useHandCursor: true }));
     add(this.add.text(W / 2, 440, '¡Empezar!', { font: 'bold 26px Arial', color: '#0f172a' }).setOrigin(0.5));
     let gone = false;

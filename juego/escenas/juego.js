@@ -217,7 +217,8 @@ class GameScene extends Phaser.Scene {
     }
     txt(330, ctrlY, explain, 22, '#ffffff', { align: 'left', wordWrap: { width: 560 }, lineSpacing: 6 }).setOrigin(0, 0.5);
     // leer en voz alta (solo en los de 5 a 7 años se lee al aparecer)
-    addSpeakButton(this, W - 130, 58, () => title + '. ' + explain + (this.twist ? '. ' + this.twist.name + ': ' + this.twist.desc : ''), D + 1, it);
+    addSpeakButton(this, W - 130, 58, () => title + '. ' + explain + (this.twist ? '. ' + this.twist.name + ': ' + this.twist.desc : ''), D + 1, it,
+      'regla_' + this.mg);   // las reglas grabadas por el narrador, si están
     // lo nuevo de este mundo
     if (this.twist) txt(W / 2, 410, '✨ ' + this.twist.name + ': ' + this.twist.desc, 19, '#fde047', { wordWrap: { width: 800 } });
 
