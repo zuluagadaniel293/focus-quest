@@ -1,0 +1,23 @@
+{
+  "name": "Focus Quest",
+  "short_name": "Focus Quest",
+  "description": "Juego para entrenar la atención, la memoria y el control de impulsos",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "assets/comunes/icono_app_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/comunes/icono_app_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
