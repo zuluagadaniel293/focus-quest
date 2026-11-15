@@ -46,8 +46,15 @@ function removePlayer(id) {
   rawStore.set('cpt_players', getPlayers().filter(p => p.id !== id));
   if (currentPlayerId() === id) rawStore.del('cpt_player');
 }
-const getRecords = () => store.get('cpt_records', {});           // { 'heroes_catch': 5, ... }
-const getChallengeLevels = () => store.get('cpt_challenge_level', {}); // nivel en que va cada mundo+minijuego del Desafío
+// Desafío: el nivel y el récord son de cada juego, iguales en todos los mundos ({ catch: 5, memory: 3, ... }).
+// Antes se guardaban por mundo ('heroes_catch'): al leerlos se juntan quedándose con el más alto de cada juego.
+const byGame = obj => {
+  const out = {};
+  Object.entries(obj || {}).forEach(([k, v]) => { const mg = k.split('_').pop(); out[mg] = Math.max(out[mg] || 0, v); });
+  return out;
+};
+const getRecords = () => byGame(store.get('cpt_records', {}));                 // mejor nivel superado de cada juego
+const getChallengeLevels = () => byGame(store.get('cpt_challenge_level', {})); // nivel en que va cada juego
 const getMemory = () => store.get('cpt_memory', {});             // { heroes: { fwd: 5, bwd: 4 }, ... } mejor secuencia en Memoria
 const getStory =() => store.get('cpt_story', {});               // { heroes: [3,2,0,0,0], ... }
 const chapterStars = theme => (getStory()[theme] || [0, 0, 0, 0, 0]);

@@ -38,8 +38,8 @@ class MinigameSelectScene extends Phaser.Scene {
       }
       this.add.text(x, y + 8, MG[mg].label, { font: 'bold 21px Arial', color: '#ffffff' }).setOrigin(0.5);
       this.add.text(x, y + 40, MG[mg].desc, { font: '14px Arial', color: '#cbd5e1', align: 'center' }).setOrigin(0.5);
-      const rec = records[this.themeKey + '_' + mg] || 0;
-      const current = levels[this.themeKey + '_' + mg] || 1;   // nivel en que quedó la última vez
+      const rec = records[mg] || 0;
+      const current = levels[mg] || 1;   // nivel en que quedó la última vez (el mismo en todos los mundos)
       this.add.text(x, y + 71, 'Nivel ' + current + (rec ? '  ·  récord ' + rec : ''),
         { font: 'bold 14px Arial', color: hexColor(th.accent) }).setOrigin(0.5);
       const zone = this.add.zone(x, y, cw, 178).setInteractive({ useHandCursor: true });

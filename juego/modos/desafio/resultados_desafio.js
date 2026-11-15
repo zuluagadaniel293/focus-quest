@@ -22,7 +22,7 @@ class ChallengeResultsScene extends Phaser.Scene {
     const next = stars >= 2 ? this.level + 1 : stars === 0 ? Math.max(1, this.level - 1) : this.level;
 
     const records = getRecords();
-    const recKey = this.themeKey + '_' + this.mg;
+    const recKey = this.mg;   // el nivel y el récord son del juego, iguales en todos los mundos
     // guardar en qué nivel quedó, para continuar desde ahí aunque salga del juego
     const levels = getChallengeLevels();
     levels[recKey] = next;
