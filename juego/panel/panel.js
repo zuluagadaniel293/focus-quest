@@ -274,7 +274,13 @@ function openPanel(scene) {
   const el = document.createElement('div');
   el.className = 'mf-panel';
   document.body.appendChild(el);
-  const close = () => { el.remove(); kb.enabled = true; kb.enableGlobalCapture(); };
+  // En el celular, Phaser también escucha los toques fuera del juego (en toda la ventana): un toque en el panel
+  // tocaba lo que había debajo (por ejemplo, la tarjeta de Historia), cambiaba de pantalla y cerraba el panel.
+  // Mientras el panel está abierto, el juego no recibe toques.
+  scene.input.enabled = false;
+  ['touchstart', 'touchmove', 'touchend', 'mousedown', 'mouseup', 'pointerdown', 'pointerup']
+    .forEach(t => el.addEventListener(t, e => e.stopPropagation()));
+  const close = () => { el.remove(); kb.enabled = true; kb.enableGlobalCapture(); if (scene.sys.isActive()) scene.input.enabled = true; };
   scene.events.once('shutdown', () => { if (el.isConnected) close(); });
   let pid = currentPlayerId() || (getPlayers()[0] || {}).id;
   const render = () => {
