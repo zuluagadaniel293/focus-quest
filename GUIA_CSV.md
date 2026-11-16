@@ -13,7 +13,8 @@ mantener presionado 2 segundos) → **Panel del profesional**. Ahí está tambi�
 - **Resumen (CSV)**: una fila por partida con sus medidas, listo para SPSS o R;
 - **CSV sin nombre**: deja solo el código del niño en los CSV y en los informes (para compartir datos del estudio);
 - **Imprimir / PDF** del panel completo;
-- **Comparar grupo**: se cargan los **Resumen (CSV)** de todos los niños (uno por familia, pueden venir todos como P01) y sale
+- **Análisis del grupo** (página aparte, fuera del juego: `analisis.html`, por ejemplo
+  https://zuluagadaniel293.github.io/focus-quest/analisis.html): se cargan los **Resumen (CSV)** de todos los niños (uno por familia, pueden venir todos como P01) y sale
   la comparación: por niño, por edad, Historia y Desafío, Modo Examen y primeras partidas frente a las últimas. Se descarga
   en PDF (**Comparación**) o en un solo CSV con todos los niños (**Todo junto**, con la columna `nino`). Los archivos se leen
   solo en ese equipo.

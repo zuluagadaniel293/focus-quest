@@ -1,4 +1,4 @@
-// Comparar grupo (en el Panel): se cargan los "Resumen (CSV)" que manda cada familia (uno por niño) y sale una
+// Análisis del grupo (página aparte: analisis.html, fuera del juego, para el equipo): se cargan los "Resumen (CSV)" que manda cada familia (uno por niño) y sale una
 // comparación de todos: por niño, por edad, Historia y Desafío, Modo Examen y cuánto cambió cada uno. Los archivos se
 // leen aquí mismo, en el navegador: no se suben a ningún lado. Se descarga en PDF o todo junto en un solo CSV.
 
@@ -126,17 +126,20 @@ function groupTables(G) {
 }
 
 // ---------- pantalla ----------
-function openGroupCompare(el, back) {
+function openGroupCompare(el) {
   let kids = [], warn = [];
+  // en el computador también se pueden arrastrar los archivos a la página
+  el.addEventListener('dragover', e => e.preventDefault());
+  el.addEventListener('drop', e => { e.preventDefault(); loadFiles([...e.dataTransfer.files]); });
   const draw = () => {
     const G = kids.length ? groupMeasures(kids) : null;
-    el.innerHTML = '<div class="mf-wrap"><header><h1>Comparar grupo</h1><div class="mf-tools">' +
+    el.innerHTML = '<div class="mf-wrap"><header><h1>Focus Quest · Análisis del grupo</h1><div class="mf-tools">' +
       '<label class="mf-primary" style="padding:8px 12px;border-radius:10px;background:#7c3aed;color:#fff;cursor:pointer">Cargar archivos (CSV)' +
       '<input type="file" class="mf-files" accept=".csv,text/csv,text/plain" multiple style="display:none"></label>' +
       (G ? '<button class="mf-gpdf">Comparación (PDF)</button><button class="mf-gcsv">Todo junto (CSV)</button><button class="mf-gclear">Quitar archivos</button>' : '') +
-      '<button class="mf-back">Volver al panel</button></div></header>' +
+      '</div></header>' +
       '<p class="mf-note">Carguen el <b>Resumen (CSV)</b> de cada niño (el que mandan las familias desde la Zona de resultados). ' +
-      'Se pueden elegir varios a la vez. Los archivos se leen solo en este equipo: no se suben a ningún lado.</p>' +
+      'Se pueden elegir varios a la vez o arrastrarlos aquí. Los archivos se leen solo en este equipo: no se suben a ningún lado.</p>' +
       (warn.length ? '<p class="mf-card" style="color:#b45309">' + warn.map(esc).join('<br>') + '</p>' : '') +
       (!G ? '<p class="mf-muted">Todavía no hay archivos cargados.</p>' :
         '<h2>Archivos cargados</h2><p class="mf-muted">Pueden cambiar el nombre con el que sale cada niño (por ejemplo, si todos vienen como P01).</p>' +
@@ -152,7 +155,6 @@ function openGroupCompare(el, back) {
         '<h2>Aciertos: primeras partidas frente a las últimas</h2>' + groupChartSVG(G)) +
       '<p class="mf-muted" style="margin-top:20px">' + esc(PANEL_NOTE) + '</p></div>';
     const q = s => el.querySelector(s);
-    q('.mf-back').onclick = back;
     q('.mf-files').onchange = e => loadFiles([...e.target.files]);
     if (!G) return;
     q('.mf-gpdf').onclick = () => groupPDF(G);

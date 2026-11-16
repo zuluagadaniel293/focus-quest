@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus Quest · Análisis del grupo</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="juego/panel/panel.css">
+<style>html, body { margin: 0; background: #f8fafc; } .mf-panel { position: static; min-height: 100vh; }</style>
+</head>
+<body>
+<!-- Página para el equipo (no es parte del juego): junta los "Resumen (CSV)" que mandan las familias y hace la
+     comparación de todos los niños. Los archivos se leen en el navegador; esta página no guarda ni sube nada. -->
+<div id="analisis" class="mf-panel"></div>
+<script>
+  // lo poco que estas piezas toman del juego
+  const PASS_STARS = 2;
+  const esc = s => String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const PANEL_NOTE = 'Focus Quest es un juego de entrenamiento de la atención: estas medidas describen cómo jugó cada niño ' +
+    'y cómo cambió con la práctica. No se comparan con normas ni reemplazan una evaluación profesional.';
+</script>
+<script>
+  (function () {
+    var v = Date.now();
+    ['juego/nucleo/estadisticas.js', 'juego/nucleo/informe.js', 'juego/panel/comparar.js'].forEach(function (f) {
+      document.write('<script src="' + f + '?v=' + v + '"><\/script>');
+    });
+  })();
+</script>
+<script>openGroupCompare(document.getElementById('analisis'));</script>
+</body>
+</html>
