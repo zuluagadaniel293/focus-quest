@@ -301,7 +301,7 @@ function openPanel(scene) {
       // Modo demostración: abre todos los mundos (para mostrar el juego) sin tocar las estrellas del niño
       '<label title="Para mostrar el juego: abre todos los mundos sin tocar las estrellas"><input type="checkbox" class="mf-demo"' +
         (unlockAll() ? ' checked' : '') + '> Modo demostración (todos los mundos abiertos)</label>' +
-      '<button class="mf-close">Cerrar</button></div></header>' +
+      '<button class="mf-group">Comparar grupo</button><button class="mf-close">Cerrar</button></div></header>' +
       '<p class="mf-note">' + esc(PANEL_NOTE) + '</p><p class="mf-muted mf-space"></p>' +
       (!p ? '<p>Todavía no hay jugadores registrados.</p>' :
         '<div class="mf-kpis">' +
@@ -317,6 +317,7 @@ function openPanel(scene) {
       '</div>';
     const q = s => el.querySelector(s);
     q('.mf-close').onclick = close;
+    q('.mf-group').onclick = () => { el.scrollTop = 0; openGroupCompare(el, render); };
     q('.mf-demo').onchange = e => rawStore.set('cpt_unlock_all', e.target.checked);
     storageInfo().then(t => { const x = q('.mf-space'); if (x) x.textContent = t; });
     if (!p) return;

@@ -12,7 +12,11 @@ mantener presionado 2 segundos) → **Panel del profesional**. Ahí está tambi�
   en cada partida, el botón **Datos** da solo las de esa partida;
 - **Resumen (CSV)**: una fila por partida con sus medidas, listo para SPSS o R;
 - **CSV sin nombre**: deja solo el código del niño en los CSV y en los informes (para compartir datos del estudio);
-- **Imprimir / PDF** del panel completo.
+- **Imprimir / PDF** del panel completo;
+- **Comparar grupo**: se cargan los **Resumen (CSV)** de todos los niños (uno por familia, pueden venir todos como P01) y sale
+  la comparación: por niño, por edad, Historia y Desafío, Modo Examen y primeras partidas frente a las últimas. Se descarga
+  en PDF (**Comparación**) o en un solo CSV con todos los niños (**Todo junto**, con la columna `nino`). Los archivos se leen
+  solo en ese equipo.
 
 El juego es entrenamiento y familiarización con las pruebas de atención: las medidas no se comparan con normas ni
 reemplazan una evaluación estandarizada. Los datos viven en el navegador de ese equipo: para un estudio, usar siempre
