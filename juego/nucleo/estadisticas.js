@@ -169,12 +169,40 @@ function saveCSV(cols, log, name) {
   const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
   const d = new Date(), pad = n => String(n).padStart(2, '0');
   const stamp = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '_' + pad(d.getHours()) + 'h' + pad(d.getMinutes());
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
   const world = { heroes: 'superheroes', fantasy: 'dragones', kingdom: 'reino_magico', space: 'espacio', ocean: 'oceano',
                   dinos: 'dinosaurios', robots: 'robots', jungle: 'selva', candy: 'dulces' };
-  a.download = 'cpt_' + name.replace(/heroes|fantasy|kingdom|space|ocean|dinos|robots|jungle|candy/, m => world[m]) + '_' + stamp + '.csv';
-  a.click();
-  URL.revokeObjectURL(url);
+  const file = 'cpt_' + name.replace(/heroes|fantasy|kingdom|space|ocean|dinos|robots|jungle|candy/, m => world[m]) + '_' + stamp + '.csv';
+  withGesture(() => deliverFile(blob, file));
+}
+// En celulares el navegador solo deja descargar o compartir justo después de un toque completo (al levantar el dedo),
+// y los botones del juego reaccionan al bajar el dedo: ahí se espera a que lo levante.
+function withGesture(fn) {
+  const ua = navigator.userActivation;
+  const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const ev = window.event;   // botones del Panel (HTML): ya vienen de un toque completo
+  if ((ua && ua.isActive) || !touch || (ev && ['click', 'touchend', 'pointerup'].includes(ev.type))) return fn();
+  let done = false;
+  const go = () => {
+    if (done) return; done = true;
+    document.removeEventListener('touchend', go, true); document.removeEventListener('pointerup', go, true);
+    fn();
+  };
+  document.addEventListener('touchend', go, true);
+  document.addEventListener('pointerup', go, true);
+  setTimeout(go, 1500);   // por si el dedo ya se había levantado
+}
+// Celular o tableta: se abre "Compartir" (Guardar en Archivos, WhatsApp, Drive...). Computador: descarga normal.
+function deliverFile(blob, file) {
+  const download = () => {
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = file; a.style.display = 'none';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 60000);   // en iPhone, si se borra enseguida, no descarga nada
+  };
+  const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  let f = null;
+  try { f = new File([blob], file, { type: 'text/csv' }); } catch (e) {}
+  if (touch && f && navigator.canShare && navigator.canShare({ files: [f] })) {
+    navigator.share({ files: [f], title: file }).catch(e => { if (!e || e.name !== 'AbortError') download(); });
+  } else download();
 }

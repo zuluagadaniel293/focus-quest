@@ -56,18 +56,25 @@ class ModeScene extends Phaser.Scene {
   resultsZone() {
     const W = GAME_W, H = GAME_H;
     const label = this.add.text(W - 16, H - 8, '🔒 Zona de resultados (mantén presionado)', { font: 'bold 14px Arial', color: '#94a3b8' })
-      .setOrigin(1, 1).setInteractive({ useHandCursor: true });
+      .setOrigin(1, 1);
+    // zona para tocar más grande que el letrero (en el celular el texto queda muy pequeño para el dedo)
+    const hit = this.add.zone(W - 170, H - 30, 340, 60).setInteractive({ useHandCursor: true });
     const bar = this.add.rectangle(W - 16 - label.width, H - 4, 0, 4, 0xfde047).setOrigin(0, 0.5);
-    let tw = null;
+    let tw = null, taps = [];
     const cancel = () => { if (tw) { tw.stop(); tw = null; } bar.width = 0; };
-    label.on('pointerdown', () => {
+    hit.on('pointerdown', () => {
       getCtx();
       cancel();
       tw = this.tweens.add({ targets: bar, width: label.width, duration: 2000,
         onComplete: () => { tw = null; bar.width = 0; openPanel(this); } });
+      // también se entra con 5 toques seguidos (por si el celular no deja mantener presionado)
+      const now = Date.now();
+      taps = taps.filter(t => now - t < 2500).concat(now);
+      if (taps.length >= 5) { taps = []; cancel(); openPanel(this); }
     });
-    label.on('pointerup', cancel);
-    label.on('pointerout', cancel);
+    // se cancela solo al levantar el dedo (en el celular, un dedo que se mueve un poco no debe cancelar)
+    this.input.on('pointerup', cancel);
+    this.input.on('gameout', cancel);
   }
   // Ícono de Memoria: tablero de casillas con un camino encendido (si no hay imagen icon_memory en comunes)
   memoryIcon() {

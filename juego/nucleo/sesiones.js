@@ -138,8 +138,11 @@ function showLastResult(scene, ses, csvName, onPlay) {
     r.on('pointerdown', cb);
   };
   if (hasLog) {
+    // las filas se traen desde ya, para que al tocar el botón el CSV salga enseguida (en celulares, si tarda, no deja descargar)
+    let rows = null;
+    sessionLog(ses).then(l => { rows = l; });
     btn(W / 2 - 140, H / 2 + 120, 250, 'Descargar CSV', 0xcbd5e1,
-      () => sessionLog(ses).then(l => { if (l) downloadCSV(unpackLog(l), csvName); }));
+      () => (rows ? downloadCSV(unpackLog(rows), csvName) : sessionLog(ses).then(l => { if (l) downloadCSV(unpackLog(l), csvName); })));
     btn(W / 2 + 140, H / 2 + 120, 250, '¡Jugar otra vez!', 0xfde047, () => { close(); onPlay(); });
   } else {
     btn(W / 2, H / 2 + 120, 300, '¡Jugar otra vez!', 0xfde047, () => { close(); onPlay(); });
