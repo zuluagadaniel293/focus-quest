@@ -201,7 +201,7 @@ function deliverFile(blob, file) {
   };
   const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
   let f = null;
-  try { f = new File([blob], file, { type: 'text/csv' }); } catch (e) {}
+  try { f = new File([blob], file, { type: blob.type.split(';')[0] }); } catch (e) {}
   if (touch && f && navigator.canShare && navigator.canShare({ files: [f] })) {
     navigator.share({ files: [f], title: file }).catch(e => { if (!e || e.name !== 'AbortError') download(); });
   } else download();

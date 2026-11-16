@@ -6,9 +6,12 @@ mantener presionado 2 segundos) → **Panel del profesional**. Ahí está tambi�
 
 - resultados por mundo, capítulo y nivel, y un **informe al terminar cada historia** (aciertos, omisiones, comisiones,
   respuestas anticipadas, tiempo de reacción y su variabilidad, principio vs. final y efecto de los distractores);
-- **Descargar todo (CSV)**: todas las filas de todas las partidas del niño (este formato, con columnas de jugador al inicio);
+- **Informe (PDF)**: informe fácil de leer con todas las partidas del niño (resumen, cómo ha cambiado y una fila por partida);
+  en cada partida, el botón **Informe** da el PDF de esa sola partida;
+- **Datos detallados (CSV)**: todas las filas de todas las partidas del niño (este formato, con columnas de jugador al inicio);
+  en cada partida, el botón **Datos** da solo las de esa partida;
 - **Resumen (CSV)**: una fila por partida con sus medidas, listo para SPSS o R;
-- **CSV sin nombre**: deja solo el código del niño (para compartir datos del estudio);
+- **CSV sin nombre**: deja solo el código del niño en los CSV y en los informes (para compartir datos del estudio);
 - **Imprimir / PDF** del panel completo.
 
 El juego es entrenamiento y familiarización con las pruebas de atención: las medidas no se comparan con normas ni
@@ -18,7 +21,9 @@ el mismo equipo y descargar todo al final de cada sesión.
 Columnas extra al inicio de los CSV del panel: `codigo`, `jugador` (si no se marcó "sin nombre"), `edad`, `partida`
 (número de partida del niño), `fecha` (AAAA-MM-DD) y `hora`.
 
-Al terminar cualquier partida (capítulo de la Historia, nivel del Desafío, Prueba fija o Memoria), el botón **Descargar CSV** guarda un archivo con **todo lo que pasó, fila por fila**.
+Al terminar una partida de la Historia o del Desafío (y en "Tu resultado anterior"), el botón **Ver informe** descarga el
+informe en PDF de esa partida (en el celular abre "Compartir": Guardar en Archivos, WhatsApp...). La tabla larga con
+**todo lo que pasó, fila por fila** (este CSV) se descarga solo desde el Panel, con **Datos detallados** o **Datos**.
 Sirve para analizar la atención del niño en Excel, Google Sheets, SPSS, R, etc.
 
 ## Abrirlo

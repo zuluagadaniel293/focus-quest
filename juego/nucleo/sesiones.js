@@ -62,9 +62,9 @@ function moveLogsToDb() {
 }
 
 // info: { mode, theme, chapter (0-4), level, minigame, boss, stars, log, memory: { fwd, bwd } }
+// Devuelve la partida guardada (sirve para su informe en PDF)
 function recordSession(info) {
   const pid = currentPlayerId();
-  if (!pid) return;
   const log = info.log || [];
   const s = levelStats(log);
   const num = v => (typeof v === 'number' && isFinite(v) ? Math.round(v * 1000) / 1000 : null);
@@ -78,6 +78,7 @@ function recordSession(info) {
       commissions: s.commissions, hitRate: num(s.hitRate), meanRT: num(s.meanRT), sdRT: num(s.sdRT) },
     log: packed
   };
+  if (!pid) return ses;
   const key = playerKey(pid, 'cpt_sessions');
   const list = rawStore.get(key, []);
   list.push(ses);
@@ -92,6 +93,7 @@ function recordSession(info) {
     const now = rawStore.get(key, []), x = now.find(z => z.t === t);
     if (x) { x.logKey = logKeyFor(pid, t); delete x.log; rawStore.set(key, now); }
   }).catch(() => {});
+  return ses;
 }
 const playerSessions = id => rawStore.get(playerKey(id, 'cpt_sessions'), []);
 // Que el navegador no borre los datos por su cuenta cuando le falte espacio (se pide desde el panel del adulto)
@@ -125,7 +127,6 @@ function showLastResult(scene, ses, csvName, onPlay) {
   add(scene.add.text(W / 2, H / 2 - 122, when + (ses.level ? '  ·  nivel ' + ses.level : ''), { font: '17px Arial', color: '#cbd5e1' }).setOrigin(0.5));
   add(scene.add.text(W / 2, H / 2 - 70, starsText(ses.stars || 0), { font: '48px Arial', color: '#fde047' }).setOrigin(0.5));
   const s = ses.stats;
-  const hasLog = !!(ses.log || ses.logKey);
   let lines = '';
   if (ses.memory) lines = 'Recordaste hasta ' + (ses.memory.fwd || 0) + (ses.memory.bwd ? ' (al revés: ' + ses.memory.bwd + ')' : '');
   else if (s) lines = ((MG[ses.minigame] && !ses.boss && MG[ses.minigame].verb) || 'Acertaste') + ' ' + s.hits + ' de ' + s.targets;
@@ -137,16 +138,9 @@ function showLastResult(scene, ses, csvName, onPlay) {
     r.on('pointerover', () => r.setAlpha(0.85)); r.on('pointerout', () => r.setAlpha(1));
     r.on('pointerdown', cb);
   };
-  if (hasLog) {
-    // las filas se traen desde ya, para que al tocar el botón el CSV salga enseguida (en celulares, si tarda, no deja descargar)
-    let rows = null;
-    sessionLog(ses).then(l => { rows = l; });
-    btn(W / 2 - 140, H / 2 + 120, 250, 'Descargar CSV', 0xcbd5e1,
-      () => (rows ? downloadCSV(unpackLog(rows), csvName) : sessionLog(ses).then(l => { if (l) downloadCSV(unpackLog(l), csvName); })));
-    btn(W / 2 + 140, H / 2 + 120, 250, '¡Jugar otra vez!', 0xfde047, () => { close(); onPlay(); });
-  } else {
-    btn(W / 2, H / 2 + 120, 300, '¡Jugar otra vez!', 0xfde047, () => { close(); onPlay(); });
-  }
+  // informe en PDF de esa partida (la tabla larga con cada fila queda en el Panel, como "Datos detallados")
+  btn(W / 2 - 140, H / 2 + 120, 250, 'Ver informe', 0xcbd5e1, () => reportSession(ses));
+  btn(W / 2 + 140, H / 2 + 120, 250, '¡Jugar otra vez!', 0xfde047, () => { close(); onPlay(); });
   const x = add(scene.add.text(W / 2 + 270, H / 2 - 172, '✕', { font: 'bold 30px Arial', color: '#ffffff' }).setOrigin(0.5)
     .setInteractive({ useHandCursor: true }));
   x.on('pointerdown', close);

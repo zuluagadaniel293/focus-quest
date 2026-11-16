@@ -132,7 +132,7 @@ function lineChart(points, label) {
 function attemptsHTML(all, list, placeTxt) {
   if (!list.length) return '';
   const rows = list.map((s, k) => '<tr><td class="num">' + (k + 1) + '</td><td>' + esc(placeTxt(s)) + '</td><td>' + esc(dateTxt(s.t)) + '</td>' +
-    statCells(s) + '<td class="mf-noprint">' + (s.log ? '<button data-csv="' + all.indexOf(s) + '">CSV</button>' : '<span class="mf-muted">sin filas</span>') +
+    statCells(s) + '<td class="mf-noprint">' + '<button data-rep="' + all.indexOf(s) + '">Informe</button> ' + (s.log ? '<button data-csv="' + all.indexOf(s) + '" title="Datos detallados">Datos</button>' : '') +
     '</td></tr>').join('');
   return '<details class="mf-attempts"><summary>Ver cada intento (' + list.length + ')</summary><div class="mf-scroll"><table><thead><tr>' +
     '<th class="num">#</th><th>Dónde</th><th>Fecha</th>' + STAT_HEAD + '<th class="mf-noprint"></th></tr></thead><tbody>' + rows +
@@ -220,7 +220,7 @@ function sesionesHTML(sessions) {
   const rows = sessions.map((s, i) => ({ s, i })).reverse().map(({ s, i }) => '<tr><td>' + esc(dateTxt(s.t)) + '</td><td>' +
     esc(MODE_LABEL[s.mode] || s.mode) + '</td><td>' + esc(worldName(s.theme)) + '</td><td>' + esc(sessionPlace(s)) + '</td><td>' +
     esc(s.boss ? 'Jefe' : s.mode === 'memoria' ? 'Memoria' : gameName(s.minigame)) + '</td>' + statCells(s) +
-    '<td class="mf-noprint">' + (s.log ? '<button data-csv="' + i + '">CSV</button>' : '<span class="mf-muted">sin filas</span>') + '</td></tr>').join('');
+    '<td class="mf-noprint">' + '<button data-rep="' + i + '">Informe</button> ' + (s.log ? '<button data-csv="' + i + '" title="Datos detallados">Datos</button>' : '') + '</td></tr>').join('');
   return '<div class="mf-scroll"><table><thead><tr><th>Fecha</th><th>Modo</th><th>Mundo</th><th>Dónde</th><th>Juego</th>' + STAT_HEAD +
     '<th class="mf-noprint"></th></tr></thead><tbody>' + rows + '</tbody></table></div>';
 }
@@ -295,7 +295,8 @@ function openPanel(scene) {
       (players.length ? '<label>Jugador <select class="mf-player">' + players.map(x => '<option value="' + x.id + '"' +
         (p && x.id === p.id ? ' selected' : '') + '>' + esc(x.name) + ' (' + esc(x.code) + ')</option>').join('') + '</select></label>' : '') +
       (p ? '<label><input type="checkbox" class="mf-anon"> CSV sin nombre (solo código)</label>' +
-        '<button class="mf-primary mf-all">Descargar todo (CSV)</button><button class="mf-sum">Resumen (CSV)</button>' +
+        '<button class="mf-primary mf-rep">Informe (PDF)</button><button class="mf-sum">Resumen (CSV)</button>' +
+        '<button class="mf-all">Datos detallados (CSV)</button>' +
         '<button class="mf-print">Imprimir / PDF</button>' : '') +
       // Modo demostración: abre todos los mundos (para mostrar el juego) sin tocar las estrellas del niño
       '<label title="Para mostrar el juego: abre todos los mundos sin tocar las estrellas"><input type="checkbox" class="mf-demo"' +
@@ -322,6 +323,7 @@ function openPanel(scene) {
     const anon = () => q('.mf-anon').checked;
     q('.mf-player').onchange = e => { pid = Number(e.target.value); render(); };
     q('.mf-all').onclick = () => downloadAllCSV(p, sessions, anon());
+    q('.mf-rep').onclick = () => reportPlayer(anon() ? Object.assign({}, p, { name: p.code }) : p, sessions, minutes);
     q('.mf-sum').onclick = () => downloadSummaryCSV(p, sessions, anon());
     q('.mf-print').onclick = () => window.print();
     q('.mf-del').onclick = () => {
@@ -330,6 +332,9 @@ function openPanel(scene) {
       pid = (getPlayers()[0] || {}).id;
       render();
     };
+    el.querySelectorAll('[data-rep]').forEach(b => {
+      b.onclick = () => reportSession(sessions[Number(b.dataset.rep)], anon() ? Object.assign({}, p, { name: p.code }) : p);
+    });
     el.querySelectorAll('[data-csv]').forEach(b => {
       b.onclick = () => {
         const s = sessions[Number(b.dataset.csv)], n = Number(b.dataset.csv) + 1;
